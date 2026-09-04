@@ -50,6 +50,15 @@ omp --model anthropic/claude-sonnet-4-5
 `examples/models.yml.example` shows a typical model setup to copy into
 `~/.omp/agent/models.yml`.
 
+### Selectable `arena` provider
+
+A provider must terminate in a real LLM chat API, and Arena has none — so a
+standalone `arena` provider entry would fail every call. The honest
+equivalent: `examples/arena-provider.models.yml.example` defines an `arena`
+provider id backed by a real backend (local Ollama by default). Copy it into
+`~/.omp/agent/models.yml` and its models appear as `arena/<id>` in `/model`
+and `--model`, with the 16 Arena tools attached.
+
 ## Install from GitHub
 
 ```

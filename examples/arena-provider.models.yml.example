@@ -1,0 +1,30 @@
+# "Arena as a provider" — the honest version.
+#
+# A provider must terminate in a real LLM chat API, and Arena has none, so
+# there is no standalone `arena` provider. What this file gives you is a
+# selectable `arena` provider id backed by a real backend, so `/model` can
+# show `arena/...` entries with the 16 Arena tools attached (the plugin
+# registers them as essential for every model).
+#
+# Copy the block you need into ~/.omp/agent/models.yml (see omp://models.md).
+
+providers:
+  # Option A — local Ollama, keyless, offline. Discovered models appear as
+  # arena/<model-id> and are selectable in /model and --model.
+  arena:
+    baseUrl: http://127.0.0.1:11434
+    auth: none
+    api: openai-responses
+    discovery:
+      type: ollama
+
+  # Option B — any OpenAI-compatible backend (vLLM, LM Studio, LiteLLM...).
+  # Uncomment and point baseUrl at your server; discovered models appear as
+  # arena/<model-id>.
+  #
+  # arena:
+  #   baseUrl: http://127.0.0.1:8000/v1
+  #   auth: none
+  #   api: openai-completions
+  #   discovery:
+  #     type: openai-models-list
