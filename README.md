@@ -1,65 +1,74 @@
-# omp-things · Arena para OMP (compatible con Linux)
+# omp-arena · Arena for OMP (Linux-compatible)
 
-Marketplace OMP con un plugin que expone modelos de simulación Rockwell
-Automation **Arena** (`.doe`) como 16 tools de solo lectura. Port del
-servidor MCP [jofongang/arena-mcp](https://github.com/jofongang/arena-mcp)
-(MIT; licencia original en `LICENSE`, copia intacta en
+OMP marketplace with a plugin that exposes Rockwell Automation **Arena**
+simulation models (`.doe`) as 16 read-only tools. A port of the MCP server
+[jofongang/arena-mcp](https://github.com/jofongang/arena-mcp) (MIT; original
+license in `LICENSE`, untouched copy in
 `plugins/arena-mcp/LICENSE.upstream`).
 
-Mismo flujo, mismos esquemas: `arena_status` → `audit_arena_model_data` →
-`extract_arena_model` (IR `0.3.0`, audit `2.0.0`). Nada guarda, ejecuta ni
-edita modelos.
+Same tools, same workflow: `arena_status` → `audit_arena_model_data` →
+`extract_arena_model` (IR `0.3.0`, audit `2.0.0`). Nothing is ever saved,
+run, or edited.
 
-## Compatible con Linux
+## Linux compatibility
 
-El extractor original solo importaba en Windows (`winreg`, `pywin32`). Aquí
-esos imports son perezosos: el módulo importa en cualquier SO y cada tool
-elige qué necesita.
+Upstream only imported on Windows (`winreg`, `pywin32`). Here those imports
+are lazy: the module imports on any OS and each tool takes only what it
+needs.
 
 | Tool | Linux | Windows + Arena |
 | --- | :---: | :---: |
-| `arena_status` (sin `live_check`) | ✅ | ✅ |
+| `arena_status` (without `live_check`) | ✅ | ✅ |
 | `list_arena_models` | ✅ | ✅ |
-| `inspect_arena_compound_file` (requiere `olefile`) | ✅ | ✅ |
+| `inspect_arena_compound_file` (needs `olefile`) | ✅ | ✅ |
 | `inspect_arena_results`, `read_arena_results` | ✅ | ✅ |
-| Resto (COM: inspect, modules, connections, extract, audit, …) | ❌ error claro | ✅ |
+| Rest (COM: inspect, modules, connections, extract, audit, …) | ❌ clear error | ✅ |
 
-Fuera de Windows, las tools COM devuelven `ArenaExtractorError` explicando
-que hace falta Windows + Arena con licencia, en vez de romper el import.
+Off Windows, COM tools return an `ArenaExtractorError` explaining that
+Windows + licensed Arena is required, instead of breaking the import.
 
-## Requisitos
+## Requirements
 
-- Python 3.10+ (`ARENA_PYTHON` para elegir intérprete, `python3`→`python` con fallback).
-- Modo extensión: sin dependencias (usa `server/omp_bridge.py`).
-- Modo servidor MCP: `pip install -r plugins/arena-mcp/server/requirements.txt`
-  (`mcp`, `olefile`; `pywin32` solo se instala en Windows).
-- Tools COM: Windows + Arena con licencia (`Arena.Application`).
+- Python 3.10+ (`ARENA_PYTHON` to pick the interpreter, `python3`→`python`
+  fallback).
+- Extension mode: no dependencies (uses `server/omp_bridge.py`).
+- MCP-server mode: `pip install -r plugins/arena-mcp/server/requirements.txt`
+  (`mcp`, `olefile`; `pywin32` installs on Windows only).
+- COM tools: Windows + licensed Arena (`Arena.Application`).
 
-## Instalación en OMP
+## Install from GitHub
 
-```sh
-/marketplace add ./path/to/omp-things
+```
+/marketplace add I0-oX/omp-arena
 /marketplace install arena@omp-arena
 ```
 
-Sin instalar, para desarrollo:
+CLI equivalent:
 
 ```sh
-omp --extension ./plugins/arena-mcp
+omp plugin marketplace add I0-oX/omp-arena
+omp plugin install arena@omp-arena
 ```
 
-Reinicia la sesión tras instalar (`/reload-plugins` refresca skills,
-comandos y MCP; las extensiones nuevas piden reinicio).
+For local development without installing:
 
-## Variables de entorno
+```sh
+git clone https://github.com/I0-oX/omp-arena.git
+omp --extension ./omp-arena/plugins/arena-mcp
+```
 
-- `ARENA_MODEL_ROOTS` — raíces de búsqueda separadas por `os.pathsep`
-  (defecto: Documents/Desktop/OneDrive + carpeta pública de Rockwell).
-- `ARENA_ALLOW_ANY_PATH=1` — permite rutas fuera de las raíces.
-- `ARENA_PYTHON` — intérprete de las tools.
-- `ARENA_BRIDGE_PATH` — override de `server/omp_bridge.py`.
+Restart the session after installing (`/reload-plugins` refreshes skills,
+commands, and MCP; new extensions need a restart).
 
-## Verificar (Linux)
+## Environment variables
+
+- `ARENA_MODEL_ROOTS` — `os.pathsep`-separated search roots (default:
+  Documents/Desktop/OneDrive + Rockwell public folder).
+- `ARENA_ALLOW_ANY_PATH=1` — allow paths outside the roots.
+- `ARENA_PYTHON` — interpreter used by the tools.
+- `ARENA_BRIDGE_PATH` — override for `server/omp_bridge.py`.
+
+## Verify (Linux)
 
 ```sh
 python3 -m py_compile plugins/arena-mcp/server/arena_extractor.py plugins/arena-mcp/server/omp_bridge.py
@@ -68,19 +77,19 @@ python3 plugins/arena-mcp/server/arena_extractor.py --status
 python3 plugins/arena-mcp/server/omp_bridge.py --json-call '{"tool":"arena_status","args":{}}'
 ```
 
-## Estructura
+## Layout
 
 ```
-.omp-plugin/marketplace.json     catálogo (marketplace "omp-arena")
+.omp-plugin/marketplace.json     catalog (marketplace "omp-arena")
 plugins/arena-mcp/
   package.json                   omp.extensions → src/extension.ts
-  .mcp.json                      declaración del servidor MCP
-  src/extension.ts               16 tools LLM + comando /arena-setup
-  server/arena_extractor.py      upstream vendored + imports perezosos
-  server/omp_bridge.py           dispatcher JSON para la extensión
+  .mcp.json                      MCP server declaration
+  src/extension.ts               16 LLM tools + /arena-setup command
+  server/arena_extractor.py      vendored upstream + lazy Windows imports
+  server/omp_bridge.py           JSON dispatcher used by the extension
   server/requirements.txt
-  skills/arena/SKILL.md          workflow del agente
+  skills/arena/SKILL.md          agent workflow
   commands/arena-{status,audit,extract}.md
   agents/arena-translator.md
-tests/test_arena_extractor.py    tests upstream (lógica pura, sin COM)
+tests/test_arena_extractor.py    upstream tests (pure logic, no COM)
 ```

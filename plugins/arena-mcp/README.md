@@ -12,7 +12,7 @@ Same 16 tools, same workflow (`arena_status` → `audit_arena_model_data` →
 ## Layout
 
 ```
-.omp-plugin/marketplace.json      marketplace catalog (add with /marketplace add ./...)
+.omp-plugin/marketplace.json      marketplace catalog (add with /marketplace add I0-oX/omp-arena)
 plugins/arena-mcp/
   package.json                    omp.extensions → src/extension.ts
   .mcp.json                       MCP server declaration (Windows host)
@@ -20,53 +20,60 @@ plugins/arena-mcp/
   server/arena_extractor.py       vendored upstream + lazy Windows imports
   server/omp_bridge.py            JSON bridge used by the extension tools
   server/requirements.txt
-  skills/arena/SKILL.md           workflow for the agent
+  skills/arena/SKILL.md           agent workflow
   commands/arena-{status,audit,extract}.md
   agents/arena-translator.md
 ```
 
 ## Install
 
-**Marketplace (recomendado):**
+**Remote (recommended):**
 
 ```
-/marketplace add ./path/to/omp-things
+/marketplace add I0-oX/omp-arena
 /marketplace install arena@omp-arena
 ```
 
-**Dev local sin instalar:**
+CLI equivalent:
+
+```sh
+omp plugin marketplace add I0-oX/omp-arena
+omp plugin install arena@omp-arena
+```
+
+**Local dev without installing:**
 
 ```sh
 omp --extension ./plugins/arena-mcp
 ```
 
-Reinicia la sesión tras instalar para cargar tools/hooks/extensiones nuevas
-(`/reload-plugins` refresca skills, comandos y MCP).
+Restart the session after installing so new tools/hooks/extensions load
+(`/reload-plugins` refreshes skills, commands, and MCP).
 
-## Requisitos
+## Requirements
 
-- Windows + Arena con licencia (`Arena.Application`) para las tools COM.
+- Windows + licensed Arena (`Arena.Application`) for the COM tools.
 - Python 3.10+; `pip install -r plugins/arena-mcp/server/requirements.txt`
-  en modo MCP-server. Las tools de la extensión funcionan sin el paquete
-  `mcp` (usan `server/omp_bridge.py`).
-- Sin Arena también funcionan: `arena_status` (sin `live_check`),
+  in MCP-server mode. The extension tools work without the `mcp` package
+  (they use `server/omp_bridge.py`).
+- These also work without Arena: `arena_status` (without `live_check`),
   `list_arena_models`, `inspect_arena_compound_file`, `inspect_arena_results`,
   `read_arena_results`.
 
-## Configuración
+## Configuration
 
-- `ARENA_MODEL_ROOTS` — raíces de búsqueda separadas por `os.pathsep`.
-- `ARENA_ALLOW_ANY_PATH=1` — permite rutas fuera de las raíces.
-- `ARENA_PYTHON` — intérprete Python de las tools (defecto `python3`).
-- `ARENA_BRIDGE_PATH` — override de `server/omp_bridge.py`.
+- `ARENA_MODEL_ROOTS` — search roots separated by `os.pathsep`.
+- `ARENA_ALLOW_ANY_PATH=1` — allow paths outside the roots.
+- `ARENA_PYTHON` — Python interpreter for the tools (default `python3`).
+- `ARENA_BRIDGE_PATH` — override for `server/omp_bridge.py`.
 
-**MCP manual** (si prefieres el servidor MCP al modo extensión): `/arena-setup`
-imprime el snippet con rutas absolutas para `.omp/mcp.json`. O edita
-`.mcp.json` (`${CLAUDE_PLUGIN_ROOT}` se resuelve en clientes compatibles).
+**Manual MCP** (if you prefer the MCP server over extension mode): `/arena-setup`
+prints the snippet with absolute paths for `.omp/mcp.json`. Or edit
+`.mcp.json` (`${CLAUDE_PLUGIN_ROOT}` resolves in compatible clients).
 
 ## Upstream
 
-Lógica de extracción vendida de `arena-mcp` con un único cambio: los imports
-de Windows (`winreg`, `pywin32`) y `mcp` son perezosos para que el módulo
-importe en Linux/Mac y las tools no-COM sigan útiles. Sin cambios de
-comportamiento en Windows.
+Extraction logic vendored from `arena-mcp` with a single change: the Windows
+imports (`winreg`, `pywin32`) and `mcp` are lazy so the module imports on
+Linux/macOS and the non-COM tools stay useful. No behavior change on
+Windows.
