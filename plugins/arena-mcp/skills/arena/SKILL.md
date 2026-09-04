@@ -17,9 +17,9 @@ driving a Python simulation translator.
 - Python 3.10+ on that machine (`ARENA_PYTHON` overrides `python3`).
 - `pip install -r server/requirements.txt` for MCP-server mode.
 
-Portable tools (work on any OS, no Arena needed): `arena_status`
-(without `live_check`), `list_arena_models`, `inspect_arena_compound_file`,
-`inspect_arena_results`, `read_arena_results`.
+Portable tools (work on any OS, no Arena needed): `inspect_arena_native`,
+`arena_status` (without `live_check`), `list_arena_models`,
+`inspect_arena_compound_file`, `inspect_arena_results`, `read_arena_results`.
 
 ## Environment
 

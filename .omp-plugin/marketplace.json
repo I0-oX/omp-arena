@@ -11,7 +11,7 @@
  "plugins": [
   {
    "category": "simulation",
-   "description": "Read-only Rockwell Arena (.doe) model extractor — 16 tools, skill and commands",
+   "description": "Read-only Rockwell Arena (.doe) model extractor — 16 tools + Linux-native inspector, skill and commands",
    "name": "arena",
    "source": "./arena-mcp",
    "version": "0.3.0"

@@ -1,7 +1,7 @@
 ---
 name: arena-translator
 description: Translate an extracted Arena neutral IR into an equivalent Python simulation. Invoke after /arena-extract.
-tools: ["arena_status", "list_arena_models", "inspect_arena_model", "list_arena_modules", "list_arena_connections", "extract_arena_model", "analyze_arena_model_compatibility", "audit_arena_model_data", "inspect_arena_project_bar", "extract_arena_submodels", "extract_arena_visual_model", "extract_arena_material_handling", "inspect_arena_compound_file", "extract_arena_siman_source", "inspect_arena_results", "read_arena_results"]
+tools: ["arena_status", "list_arena_models", "inspect_arena_model", "list_arena_modules", "list_arena_connections", "extract_arena_model", "analyze_arena_model_compatibility", "audit_arena_model_data", "inspect_arena_project_bar", "extract_arena_submodels", "extract_arena_visual_model", "extract_arena_material_handling", "inspect_arena_compound_file", "extract_arena_siman_source", "inspect_arena_results", "read_arena_results", "inspect_arena_native"]
 ---
 
 # Arena translator

@@ -206,6 +206,15 @@ export default function arenaExtension(pi: ExtensionAPI) {
     limit: num("Max rows. 1-10000, default 100.").optional(),
   }), ["database_path", "section", "limit"]);
 
+  tool("inspect_arena_native", "Linux-native .doe reader: header, metadata, streams, VBA, strings. No Arena needed.", z.object({
+    model_path: str("Path to a .doe model file."),
+    include_strings: flag("Include printable-string inventory. Default true.").optional(),
+    include_vba: flag("Extract VBA macro source (needs oletools). Default true.").optional(),
+    max_strings: num("Max strings. 0-100000, default 500.").optional(),
+    max_string_chars: num("Max string chars. Default 100000.").optional(),
+    max_vba_chars: num("Max VBA chars. Default 200000.").optional(),
+  }), ["model_path", "include_strings", "include_vba", "max_strings", "max_string_chars", "max_vba_chars"]);
+
   pi.registerCommand("arena-setup", {
     description: "Print the .omp/mcp.json snippet that wires the Arena MCP server",
     handler: async (_args, ctx) => {

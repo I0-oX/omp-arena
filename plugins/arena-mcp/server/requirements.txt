@@ -5,4 +5,5 @@
 # (they use server/omp_bridge.py); the MCP server mode needs all three.
 mcp==1.28.1
 olefile==0.47
+oletools>=0.60  # Linux-native VBA extraction (pure Python, optional at runtime)
 pywin32==312; sys_platform == "win32"

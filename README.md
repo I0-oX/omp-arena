@@ -6,7 +6,7 @@ simulation models (`.doe`) as 16 read-only tools. A port of the MCP server
 license in `LICENSE`, untouched copy in
 `plugins/arena-mcp/LICENSE.upstream`).
 
-Same tools, same workflow: `arena_status` → `audit_arena_model_data` →
+Same 16 tools plus a Linux-native `inspect_arena_native`, same workflow: `arena_status` → `audit_arena_model_data` →
 `extract_arena_model` (IR `0.3.0`, audit `2.0.0`). Nothing is ever saved,
 run, or edited.
 
@@ -21,6 +21,7 @@ needs.
 | `arena_status` (without `live_check`) | ✅ | ✅ |
 | `list_arena_models` | ✅ | ✅ |
 | `inspect_arena_compound_file` (needs `olefile`) | ✅ | ✅ |
+| `inspect_arena_native` (header, VBA, strings — needs `olefile`, VBA needs `oletools`) | ✅ | ✅ |
 | `inspect_arena_results`, `read_arena_results` | ✅ | ✅ |
 | Rest (COM: inspect, modules, connections, extract, audit, …) | ❌ clear error | ✅ |
 
@@ -96,6 +97,8 @@ python3 plugins/arena-mcp/server/omp_bridge.py \
   --json-call '{"tool":"read_arena_results","args":{"database_path":"tests/fixtures/sample_results.db","section":"project"}}'
 ARENA_MODEL_ROOTS=/tmp/arena_demo python3 plugins/arena-mcp/server/omp_bridge.py \
   --json-call '{"tool":"list_arena_models","args":{"limit":50}}'
+python3 plugins/arena-mcp/server/omp_bridge.py \
+  --json-call '{"tool":"inspect_arena_native","args":{"model_path":"Modelo.doe","max_strings":50}}'
 ```
 
 COM tools (`audit_arena_model_data`, `extract_arena_model`, …) need a

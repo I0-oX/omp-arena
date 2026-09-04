@@ -6,7 +6,7 @@ Read-only extractor for Rockwell Automation **Arena** simulation models
 `LICENSE.upstream`). The server asks Arena itself to open models through its
 Windows COM object model. It **never saves, runs, or edits a model**.
 
-Same 16 tools, same workflow (`arena_status` → `audit_arena_model_data` →
+Same 16 tools plus Linux-native `inspect_arena_native`, same workflow (`arena_status` → `audit_arena_model_data` →
 `extract_arena_model`), same schema versions (IR `0.3.0`, audit `2.0.0`).
 
 ## Layout
@@ -56,7 +56,7 @@ Restart the session after installing so new tools/hooks/extensions load
 - Python 3.10+; `pip install -r plugins/arena-mcp/server/requirements.txt`
   in MCP-server mode. The extension tools work without the `mcp` package
   (they use `server/omp_bridge.py`).
-- These also work without Arena: `arena_status` (without `live_check`),
+- These also work without Arena (and `inspect_arena_native` works on any OS): `arena_status` (without `live_check`),
   `list_arena_models`, `inspect_arena_compound_file`, `inspect_arena_results`,
   `read_arena_results`.
 

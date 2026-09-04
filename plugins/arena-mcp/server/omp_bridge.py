@@ -6,7 +6,8 @@ prints exactly one JSON document to stdout::
     {"ok": true, "result": {...}}
     {"ok": false, "error": "..."}
 
-Only the 16 read-only arena tools are exposed. Unknown tools and unexpected
+Only the 16 read-only arena tools plus the Linux-native `inspect_arena_native`
+are exposed. Unknown tools and unexpected
 argument names are rejected before anything runs. Arena/COM tools raise a
 clear ``ArenaExtractorError`` on machines without Arena instead of an
 import-time crash (see the lazy Windows imports in ``arena_extractor``).
@@ -23,6 +24,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import arena_extractor as extractor
+import native_doe
 
 _TOOLS: dict[str, str] = {
     "arena_status": "get_arena_status",
@@ -43,13 +45,24 @@ _TOOLS: dict[str, str] = {
     "read_arena_results": "read_results",
 }
 
+_NATIVE_TOOLS: dict[str, str] = {
+    "inspect_arena_native": "inspect_native_doe",
+}
+
 
 def _call(tool: str, args: dict[str, Any]) -> Any:
-    if tool not in _TOOLS:
+    if tool in _NATIVE_TOOLS:
+        module: Any = native_doe
+        table = _NATIVE_TOOLS
+    elif tool in _TOOLS:
+        module = extractor
+        table = _TOOLS
+    else:
         raise ValueError(
-            f"Unknown tool {tool!r}; choose from {', '.join(sorted(_TOOLS))}."
+            f"Unknown tool {tool!r}; choose from "
+            f"{', '.join(sorted(set(_TOOLS) | set(_NATIVE_TOOLS)))}."
         )
-    fn = getattr(extractor, _TOOLS[tool])
+    fn = getattr(module, table[tool])
     if not isinstance(args, dict):
         raise ValueError("'args' must be an object.")
     accepted = inspect.signature(fn).parameters
