@@ -83,6 +83,25 @@ omp --extension ./omp-arena/plugins/arena-mcp
 Restart the session after installing (`/reload-plugins` refreshes skills,
 commands, and MCP; new extensions need a restart).
 
+## Try it on Linux (no Arena needed)
+
+The portable tools work end-to-end here. A sample results DB is included —
+regenerate it anytime with `python3 tests/fixtures/make_sample_results.py`:
+
+```sh
+export ARENA_ALLOW_ANY_PATH=1
+python3 plugins/arena-mcp/server/omp_bridge.py \
+  --json-call '{"tool":"inspect_arena_results","args":{"database_path":"tests/fixtures/sample_results.db"}}'
+python3 plugins/arena-mcp/server/omp_bridge.py \
+  --json-call '{"tool":"read_arena_results","args":{"database_path":"tests/fixtures/sample_results.db","section":"project"}}'
+ARENA_MODEL_ROOTS=/tmp/arena_demo python3 plugins/arena-mcp/server/omp_bridge.py \
+  --json-call '{"tool":"list_arena_models","args":{"limit":50}}'
+```
+
+COM tools (`audit_arena_model_data`, `extract_arena_model`, …) need a
+Windows host with licensed Arena and a real `.doe` path — on Linux they
+answer with a clear `ArenaExtractorError` instead of failing silently.
+
 ## Environment variables
 
 - `ARENA_MODEL_ROOTS` — `os.pathsep`-separated search roots (default:
