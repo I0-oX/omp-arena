@@ -1,0 +1,13 @@
+# Example: use the Arena tools with a real model.
+#
+# Arena is NOT a model/provider — it has no chat API, so it can never appear
+# in `omp models` or after `--model`. The Arena plugin attaches 16 read-only
+# tools (loadMode: essential, approval: read) to whichever real model you run.
+# This file only shows a typical model setup; copy the bits you need into
+# ~/.omp/agent/models.yml (see omp://models.md).
+providers:
+  # Example default; replace with any provider/model you actually use.
+  anthropic:
+    modelOverrides:
+      claude-sonnet-4-5:
+        name: Sonnet (Arena-enabled)

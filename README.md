@@ -36,6 +36,20 @@ Windows + licensed Arena is required, instead of breaking the import.
   (`mcp`, `olefile`; `pywin32` installs on Windows only).
 - COM tools: Windows + licensed Arena (`Arena.Application`).
 
+## Use with a model
+
+Arena is not a model and can never appear in `omp models` or `--model` —
+it has no chat API. The plugin attaches its 16 read-only tools
+(`loadMode: essential`, `approval: read`) to whichever real model you run:
+
+```sh
+omp --model anthropic/claude-sonnet-4-5
+# then: /arena-status, or "audit this .doe model ..."
+```
+
+`examples/models.yml.example` shows a typical model setup to copy into
+`~/.omp/agent/models.yml`.
+
 ## Install from GitHub
 
 ```

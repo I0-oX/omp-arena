@@ -101,6 +101,7 @@ export default function arenaExtension(pi: ExtensionAPI) {
       description,
       parameters,
       approval: "read",
+      loadMode: "essential",
       async execute(_id, params, signal, onUpdate) {
         const args: Record<string, unknown> = {};
         for (const key of argNames) {
