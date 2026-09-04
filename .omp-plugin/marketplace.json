@@ -1,17 +1,17 @@
 {
  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
  "metadata": {
-  "description": "Plugins OMP para simulaci\u00f3n con Rockwell Automation Arena",
+  "description": "OMP plugins for Rockwell Automation Arena simulation",
   "pluginRoot": "./plugins"
  },
  "name": "omp-arena",
  "owner": {
-  "name": "omp-things"
+  "name": "I0-oX"
  },
  "plugins": [
   {
    "category": "simulation",
-   "description": "Extractor read-only de modelos Rockwell Arena (.doe) \u2014 16 tools, skill y comandos",
+   "description": "Read-only Rockwell Arena (.doe) model extractor — 16 tools, skill and commands",
    "name": "arena",
    "source": "./arena-mcp",
    "version": "0.3.0"
