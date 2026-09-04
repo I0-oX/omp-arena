@@ -10,6 +10,10 @@ Same 16 tools plus a Linux-native `inspect_arena_native`, same workflow: `arena_
 `extract_arena_model` (IR `0.3.0`, audit `2.0.0`). Nothing is ever saved,
 run, or edited.
 
+Second plugin **`lmarena`**: arena.ai (LMArena) direct chat from OMP
+through your logged-in Chrome tab — there is no public API, so it drives
+the real UI via the browser relay (`/arena-direct max <prompt>`).
+
 ## Linux compatibility
 
 Upstream only imported on Windows (`winreg`, `pywin32`). Here those imports

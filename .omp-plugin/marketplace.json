@@ -15,6 +15,13 @@
    "name": "arena",
    "source": "./arena-mcp",
    "version": "0.3.0"
+  },
+  {
+   "name": "lmarena",
+   "description": "arena.ai direct chat from OMP through your logged-in Chrome (no API, relay-driven)",
+   "source": "./lmarena",
+   "version": "1.0.0",
+   "category": "models"
   }
  ]
 }
