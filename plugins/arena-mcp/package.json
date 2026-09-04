@@ -1,0 +1,1 @@
+{"description": "OMP plugin: read-only Rockwell Automation Arena model extractor (port of arena-mcp)", "license": "MIT", "name": "omp-arena-plugin", "omp": {"extensions": ["./src/extension.ts"]}, "version": "0.3.0"}

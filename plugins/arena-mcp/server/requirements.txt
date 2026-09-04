@@ -1,0 +1,8 @@
+# Arena requirements (Windows host with licensed Arena)
+#
+# Same set as upstream arena-mcp. pywin32 is Windows-only; olefile and mcp
+# are cross-platform. The OMP extension tools work without `mcp` installed
+# (they use server/omp_bridge.py); the MCP server mode needs all three.
+mcp==1.28.1
+olefile==0.47
+pywin32==312; sys_platform == "win32"
